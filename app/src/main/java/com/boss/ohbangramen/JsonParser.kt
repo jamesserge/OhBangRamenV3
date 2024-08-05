@@ -1,5 +1,7 @@
 package com.example.ohbangramen
 
+//Alternate link: https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json
+
 //import io.ktor.client.HttpClient
 //import io.ktor.client.call.receive
 //import io.ktor.client.request.get

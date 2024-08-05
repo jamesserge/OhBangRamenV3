@@ -73,6 +73,12 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
 
     val menuItems: LiveData<List<MenuItemRoom>> = database.menuItemDao().getAll()
 
+    fun clearDatabase() {
+        viewModelScope.launch (Dispatchers.IO) {
+            database.menuItemDao().clearAll()
+        }
+    }
+
     fun loadData(onLoadComplete: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             if (
@@ -99,10 +105,12 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
     private suspend fun fetchMenu(): List<MenuItemNetwork> {
         val httpClient = HttpClient(Android) {
             install(ContentNegotiation) {
-                json(contentType = ContentType("text", "plain"))
+                json(contentType = ContentType.Application.Json)
+                // For ContentType, use this bash command: curl -I https://whateverURL
+                // Change to this if necessary: ContentType("text", "plain"))
             }
         }
-        return httpClient.get("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")
+        return httpClient.get("https://jamesserge.github.io/ohbang-json/data.json")//"https://jamesserge.github.io/ohbang-json/data.json")
             .body<MenuNetwork>()
             .menu
     }
@@ -138,6 +146,7 @@ fun AppContent(
     var isLoading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
+        menuViewModel.clearDatabase()
         // Perform initial data fetching
         menuViewModel.loadData {
             isLoading = false // Update state when loading is complete

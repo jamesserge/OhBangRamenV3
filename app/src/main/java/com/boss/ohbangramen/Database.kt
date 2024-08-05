@@ -36,6 +36,9 @@ interface MenuItemDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg menuItems: MenuItemRoom)
 
+    @Query("DELETE FROM menuitemroom")
+    fun clearAll(): Int
+
     @Query("SELECT (SELECT COUNT(*) FROM MenuItemRoom) == 0")
     fun isEmpty(): Boolean
 
