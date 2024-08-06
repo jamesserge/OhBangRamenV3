@@ -63,12 +63,11 @@ fun Home(navController: NavHostController, sharedPreferences: SharedPreferences,
 
     var searchPhrase by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("") }
-
     val filteredMenuItems by menuViewModel.getFilteredMenuItems(searchPhrase, selectedCategory).observeAsState(
         emptyList()
     )
-
     val focusManager = LocalFocusManager.current
+    val maxDescriptionLength = 50 // Set the maximum number of characters
 
     // State for network error notification
     var networkError by remember { mutableStateOf(false) }
@@ -244,6 +243,7 @@ fun Home(navController: NavHostController, sharedPreferences: SharedPreferences,
                     }
                 }
                 items(filteredMenuItems) { menuItem ->
+
                     Card(
                         modifier = Modifier
                             .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -283,6 +283,10 @@ fun Home(navController: NavHostController, sharedPreferences: SharedPreferences,
                                     .padding(start = 16.dp)
                                     .weight(1f)
                             ) {
+                                val shortenedDescription = if (menuItem.description.length > maxDescriptionLength) {
+                                    menuItem.description.substring(0, maxDescriptionLength) + "..."
+                                } else { menuItem.description }
+
                                 Text(
                                     text = menuItem.title,
                                     color = Color.Black,
@@ -291,7 +295,7 @@ fun Home(navController: NavHostController, sharedPreferences: SharedPreferences,
                                     modifier = Modifier.padding(bottom = 8.dp)
                                 )
                                 Text(
-                                    text = menuItem.description,
+                                    text = shortenedDescription,
                                     color = Color(0xFF495E57),
                                     fontSize = 16.sp,
                                     fontFamily = FontFamily.SansSerif,
