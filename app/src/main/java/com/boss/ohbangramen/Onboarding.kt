@@ -138,7 +138,7 @@ fun Onboarding(navController: NavHostController, sharedPreferences: SharedPrefer
                     Text(text = "Email")
                     TextField(
                         value = emailState.value,
-                        onValueChange = { newValue -> emailState.value = newValue },
+                        onValueChange = { newValue -> emailState.value = newValue.trim() },
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.weight(1f)) // Spacer to push content to the top

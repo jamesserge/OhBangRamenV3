@@ -73,6 +73,7 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
 
     val menuItems: LiveData<List<MenuItemRoom>> = database.menuItemDao().getAll()
 
+    //Just in case.
     fun clearDatabase() {
         viewModelScope.launch (Dispatchers.IO) {
             database.menuItemDao().clearAll()
@@ -81,6 +82,7 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadData(onLoadComplete: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
+            database.menuItemDao().clearAll()
             if (
 //                isNetworkAvailable() &&
                 isMenuEmpty()) {
@@ -146,7 +148,7 @@ fun AppContent(
     var isLoading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        menuViewModel.clearDatabase()
+//        menuViewModel.clearDatabase()
         // Perform initial data fetching
         menuViewModel.loadData {
             isLoading = false // Update state when loading is complete
